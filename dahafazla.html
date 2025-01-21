@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mustafa Erol - Hakkında Detaylı Bilgi">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Daha Fazla Bilgi - Mustafa Erol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Yükleme Animasyonu */
+        #loader {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loader::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease forwards, gradientBG 15s ease infinite;
+        }
+
+        /* Ana İçerik */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.3s;
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .content-section p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Skill Bars */
+        .skills {
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .skill-bar {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(45deg, #23a6d5, #23d5ab);
+            border-radius: 5px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: fillBar 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Butonlar */
+        .btn-back {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #23a6d5, #23d5ab);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(35, 166, 213, 0.4);
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fillBar {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 20px;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Yarışma Deneyimleri Stilleri */
+        .achievements {
+            margin-top: 30px;
+        }
+
+        .achievement-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .achievement-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .achievement-list li:hover {
+            transform: translateX(10px);
+        }
+
+        .achievement-list i {
+            font-size: 2rem;
+            color: #3498db;
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+
+        .achievement-list h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .achievement-list p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* Yazılım Araçları Grid Stilleri */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tool-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tool-item i {
+            font-size: 1.5rem;
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        .tool-item span {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        /* Karanlık Mod Uyumluluğu */
+        body.dark-mode .achievement-list li,
+        body.dark-mode .tool-item {
+            background: #2a2a2a;
+        }
+
+        body.dark-mode .achievement-list h4,
+        body.dark-mode .tool-item span {
+            color: #fff;
+        }
+
+        body.dark-mode .achievement-list p {
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .achievement-list li {
+                padding: 10px;
+            }
+        }
+
+        /* Karanlık Mod Stilleri */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(-45deg, #2c3e50, #3498db, #2980b9, #2c3e50);
+        }
+
+        body.dark-mode .content-section {
+            background: #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode .content-section h2 {
+            color: #fff;
+        }
+
+        body.dark-mode .content-section p {
+            color: #ddd;
+        }
+
+        body.dark-mode .skill-name {
+            color: #fff;
+        }
+
+        body.dark-mode .skill-bar {
+            background: #444;
+        }
+
+        body.dark-mode .achievement-list li {
+            background: #2a2a2a;
+        }
+
+        body.dark-mode .achievement-list h4 {
+            color: #fff;
+        }
+
+        body.dark-mode .achievement-list p {
+            color: #ddd;
+        }
+
+        body.dark-mode .tool-item {
+            background: #2a2a2a;
+        }
+
+        body.dark-mode .tool-item span {
+            color: #fff;
+        }
+
+        body.dark-mode .btn-back {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: #fff;
+        }
+
+        body.dark-mode .btn-back:hover {
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Yükleme Animasyonu -->
+    <div id="loader"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Hakkımda Daha Fazlası</h1>
+    </div>
+
+    <!-- Ana İçerik -->
+    <div class="container">
+        <div class="content-section">
+            <h2>Deneyimlerim</h2>
+            <p>Yazılım geliştirme alanında 4 yıllık deneyimim bulunmaktadır. Lise eğitimimi Bilişim teknolojileri bölümümde İsmet İnenü MTAL okulunda tamamladım. Lise son sınıfda staj eğitimimi de İş Bankasın da tamamladım. Şimdilerde ise Akdeniz Üniversitesi Korkuteli MYO da Bilgisayar Programcılığı eğitimimi görmekteyim.</p>
+            
+            <div class="achievements">
+                <h3>Yarışma Deneyimleri</h3>
+                <ul class="achievement-list">
+                    <li>
+                        <i class="fas fa-robot"></i>
+                        <div>
+                            <h4>MEB Robot Yarışması</h4>
+                            <p>Mini Sumo kategorisinde 2 kez katılım (Uluslararası)</p>
+                            <p>Sanal Ön Eleme - 13. sıralama</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-rocket"></i>
+                        <div>
+                            <h4>TEKNOFEST</h4>
+                            <p>Katılımcı</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="skills">
+                <h3>Teknik Yetenekler</h3>
+                <div class="skill-item">
+                    <div class="skill-name">Web Geliştirme</div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 70%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-name">Veritabanı Yönetimi</div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 60%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-name">Python</div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 70%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-name">C#</div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <h3>Kullandığım Yazılımlar</h3>
+                <div class="tools-grid">
+                    <div class="tool-item">
+                        <i class="fas fa-code"></i>
+                        <span>Visual Studio 2022</span>
+                    </div>
+                    <div class="tool-item">
+                        <i class="fas fa-code"></i>
+                        <span>Visual Studio Code</span>
+                    </div>
+                    <div class="tool-item">
+                        <i class="fas fa-terminal"></i>
+                        <span>Cursor Editor</span>
+                    </div>
+                    <div class="tool-item">
+                        <i class="fab fa-python"></i>
+                        <span>Python IDLE</span>
+                    </div>
+                    <div class="tool-item">
+                        <i class="fas fa-database"></i>
+                        <span>Microsoft Access</span>
+                    </div>
+                    <div class="tool-item">
+                        <i class="far fa-file-alt"></i>
+                        <span>MS Office</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Eğitim</h2>
+            <p>İsmet İnenü MTAL BT bölümü mezunuyum. Şuan Akdeniz üniversitesinde 1. sınıf öğerncisiyim. Sürekli kendimi geliştirmek için online kurslar ve eğitimler alıyorum.</p>
+            <div class="education-timeline">
+                <div class="education-item">
+                    <h3>Bilgisayar Programcılığı</h3>
+                    <p>Akdeniz Üniversitesi (2024)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Projeler</h2>
+            <p>Çeşitli web projeleri</p>
+            <ul class="project-list">
+                <li>
+                    <h3>Hisse senedi takip uygulaması</h3>
+                    <p>Ekibimle birlikte Hisse senedi anlık takip uygulaması geliştirdim.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Geri Dön Butonu -->
+        <a href="index1.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
+        </a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Yükleme Animasyonu
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.display = 'none';
+            }, 1000);
+
+            // Sayfa yüklendiğinde localStorage'dan dil ayarını kontrol et
+            const currentLang = localStorage.getItem('language') || 'tr';
+            updateTexts(currentLang);
+
+            // Sayfa yüklendiğinde tema ayarını kontrol et
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        });
+
+        // Scroll Animasyonu
+        const sections = document.querySelectorAll('.content-section');
+        
+        const observerOptions = {
+            threshold: 0.25
+        };
+
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Dil çevirisi için sözlük
+        const translations = {
+            tr: {
+                'More About Me': 'Hakkımda Daha Fazlası',
+                'My Experience': 'Deneyimlerim',
+                'Competition Experience': 'Yarışma Deneyimleri',
+                'MEB Robot Competition': 'MEB Robot Yarışması',
+                'Two-time participant in Mini Sumo category (International)': 'Mini Sumo kategorisinde 2 kez katılım (Uluslararası)',
+                'Virtual Qualification - 13th place': 'Sanal Ön Eleme - 13. sıralama',
+                'Technical Skills': 'Teknik Yetenekler',
+                'Web Development': 'Web Geliştirme',
+                'Database Management': 'Veritabanı Yönetimi',
+                'Software I Use': 'Kullandığım Yazılımlar',
+                'Education': 'Eğitim',
+                'Projects': 'Projeler',
+                'Back to Home': 'Ana Sayfaya Dön',
+                'I have 4 years of experience in software development...': 'Yazılım geliştirme alanında 4 yıllık deneyimim bulunmaktadır. Lise eğitimimi Bilişim teknolojileri bölümümde İsmet İnenü MTAL okulunda tamamladım. Lise son sınıfda staj eğitimimi de İş Bankasın da tamamladım. Şimdilerde ise Akdeniz Üniversitesi Korkuteli MYO da Bilgisayar Programcılığı eğitimimi görmekteyim.',
+                'Computer Programming': 'Bilgisayar Programcılığı',
+                'Various Web Projects': 'Çeşitli web projeleri',
+                'Stock Market Tracking Application': 'Hisse senedi takip uygulaması',
+                'I developed a real-time stock market tracking application with my team.': 'Ekibimle birlikte Hisse senedi anlık takip uygulaması geliştirdim.',
+                'TEKNOFEST': 'TEKNOFEST',
+                'Participant': 'Katılımcı',
+                'I graduated from İsmet İnenü MTAL IT department. Currently, I am a first-year student at Akdeniz University. I am continuously taking online courses and training to improve myself.': 'İsmet İnenü MTAL BT bölümü mezunuyum. Şuan Akdeniz üniversitesinde 1. sınıf öğerncisiyim. Sürekli kendimi geliştirmek için online kurslar ve eğitimler alıyorum.',
+                'Akdeniz University (2024)': 'Akdeniz Üniversitesi (2024)'
+            },
+            en: {
+                'Hakkımda Daha Fazlası': 'More About Me',
+                'Deneyimlerim': 'My Experience',
+                'Yarışma Deneyimleri': 'Competition Experience',
+                'MEB Robot Yarışması': 'MEB Robot Competition',
+                'Mini Sumo kategorisinde 2 kez katılım (Uluslararası)': 'Two-time participant in Mini Sumo category (International)',
+                'Sanal Ön Eleme - 13. sıralama': 'Virtual Qualification - 13th place',
+                'Teknik Yetenekler': 'Technical Skills',
+                'Web Geliştirme': 'Web Development',
+                'Veritabanı Yönetimi': 'Database Management',
+                'Kullandığım Yazılımlar': 'Software I Use',
+                'Eğitim': 'Education',
+                'Projeler': 'Projects',
+                'Ana Sayfaya Dön': 'Back to Home',
+                'Yazılım geliştirme alanında 4 yıllık deneyimim bulunmaktadır...': 'I have 4 years of experience in software development. I completed my high school education in Information Technologies at İsmet İnenü MTAL. I completed my internship at İş Bank in my senior year. Currently, I am studying Computer Programming at Akdeniz University Korkuteli Vocational School.',
+                'Bilgisayar Programcılığı': 'Computer Programming',
+                'Çeşitli web projeleri': 'Various Web Projects',
+                'Hisse senedi takip uygulaması': 'Stock Market Tracking Application',
+                'Ekibimle birlikte Hisse senedi anlık takip uygulaması geliştirdim.': 'I developed a real-time stock market tracking application with my team.',
+                'TEKNOFEST': 'TEKNOFEST',
+                'Katılımcı': 'Participant',
+                'İsmet İnenü MTAL BT bölümü mezunuyum. Şuan Akdeniz üniversitesinde 1. sınıf öğerncisiyim. Sürekli kendimi geliştirmek için online kurslar ve eğitimler alıyorum.': 'I graduated from İsmet İnenü MTAL IT department. Currently, I am a first-year student at Akdeniz University. I am continuously taking online courses and training to improve myself.',
+                'Akdeniz Üniversitesi (2024)': 'Akdeniz University (2024)'
+            }
+        };
+
+        // Metinleri güncelleme fonksiyonu
+        function updateTexts(lang) {
+            document.querySelectorAll('h1, h2, h3, h4, p, span, a').forEach(element => {
+                const text = element.textContent.trim();
+                if (translations[lang][text]) {
+                    element.textContent = translations[lang][text];
+                }
+            });
+        }
+
+        // localStorage'daki dil değişikliğini dinle
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'language') {
+                updateTexts(e.newValue);
+            }
+        });
+
+        // localStorage'daki tema değişikliğini dinle
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'darkMode') {
+                if (e.newValue === 'true') {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

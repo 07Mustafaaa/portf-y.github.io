@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mustafa Erol - Yazılım Geliştirici Kişisel Web Sitesi">
+    <meta name="keywords" content="yazılım, web tasarım, geliştirici, Mustafa Erol">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Mustafa Erol - Kişisel Web Sitesi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.159.0/three.min.js"></script>
+    <style>
+        /* Genel Stiller */
+        body { 
+            margin: 0; 
+            overflow-y: auto !important; 
+            background-color: transparent;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Tema ve Dil Değiştirici */
+        .theme-language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .switch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .switch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Yükleme Animasyonu */
+        #loader {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loader::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigasyon */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #3498db;
+        }
+
+        .navbar-menu ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Kimdir Bölümü */
+        .bg-1 {
+            background: transparent;
+            color: white;
+            padding: 150px 20px;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .profile-content {
+            text-align: left;
+            animation: slideIn 1s ease-out forwards;
+        }
+
+        .profile-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-content h2 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .profile-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Diğer Bölümler */
+        .container-fluid {
+            padding: 100px 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .container-fluid.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bg-2, .bg-3, .bg-5 {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .bg-2 {
+            padding: 80px 20px;
+        }
+
+        .bg-3 {
+            padding: 80px 20px;
+        }
+
+        /* Fancy Button */
+        .fancy-btn {
+            position: relative;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .fancy-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .fancy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .fancy-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Blog Kartları */
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 0 20px;
+        }
+
+        .col-sm-4 {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        .col-sm-4:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .col-sm-4 img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .col-sm-4 p {
+            padding: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Karanlık Mod */
+        body.dark-mode {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        body.light-mode {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        body.light-mode nav {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.light-mode .navbar-brand,
+        body.light-mode .navbar-menu a {
+            color: #333;
+        }
+
+        body.light-mode .navbar-menu a:hover {
+            color: #3498db;
+        }
+
+        body.light-mode .bg-1,
+        body.light-mode .bg-2,
+        body.light-mode .bg-3,
+        body.light-mode .bg-5 {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+
+        /* Bölüm arka planları */
+        .bg-1, .bg-2, .bg-3, .bg-5 {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark-mode .bg-1,
+        body.dark-mode .bg-2,
+        body.dark-mode .bg-3,
+        body.dark-mode .bg-5 {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Space scene */
+        #space-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* Content container */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Animasyonlar */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-toggle {
+                display: block;
+            }
+
+            .navbar-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                padding: 2rem 0;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .navbar-menu.active {
+                left: 0;
+            }
+
+            .navbar-menu ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .profile-content {
+                text-align: center;
+            }
+
+            .profile-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .profile-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .theme-language-switcher {
+                top: 80px;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+        }
+
+        /* İletişim Formu Stilleri */
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .contact-info i {
+            color: #3498db;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .contact-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .contact-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Footer ve Sosyal Medya Stilleri */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem 0;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link i {
+            font-size: 1.5rem;
+        }
+
+        /* Sosyal medya ikonları için özel renkler */
+        .social-link:hover {
+            animation: pulse 1s ease infinite;
+        }
+
+        .social-link:hover i.fa-instagram {
+            background: -webkit-linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .social-link:hover i.fa-github {
+            color: #333;
+        }
+
+        .social-link:hover i.fa-linkedin {
+            color: #0077b5;
+        }
+
+        .social-link:hover i.fa-skype {
+            color: #00aff0;
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Dark mode geçiş animasyonu */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .content-section, .col-sm-4, .social-link {
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Kozmik Animasyon Stilleri */
+        .cosmos {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000000 0%, #090a0f 100%);
+            overflow: hidden;
+            perspective: 1500px;
+        }
+
+        .solar-system {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateX(60deg);
+            animation: systemRotate 30s linear infinite;
+        }
+
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation: orbitRotate 20s linear infinite;
+        }
+
+        .planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            border-radius: 50%;
+            box-shadow: 
+                inset -25px -25px 40px rgba(0,0,0,0.5),
+                0 0 20px rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .sun {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                #ffff00, 
+                #ffd700, 
+                #ff8c00, 
+                #ff4500
+            );
+            border-radius: 50%;
+            box-shadow: 
+                0 0 50px #ff8c00, 
+                0 0 100px #ff4500,
+                inset -20px -20px 50px rgba(255,140,0,0.5),
+                inset 20px 20px 50px rgba(255,69,0,0.3);
+            transform: translate(-50%, -50%);
+            animation: 
+                sunPulse 3s ease-in-out infinite alternate,
+                sunRotate 60s linear infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sun::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center, 
+                rgba(255,255,0,0.2) 0%, 
+                rgba(255,140,0,0.1) 50%, 
+                transparent 70%
+            );
+            animation: sunCorona 5s ease-in-out infinite alternate;
+        }
+
+        .earth {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                #4b9fe1, 
+                #1a4567, 
+                #0d47a1, 
+                #00296b
+            );
+            transform: translate(-50%, -50%) translateX(150px);
+            animation: 
+                planetRotate 15s linear infinite,
+                earthTexture 10s linear infinite;
+        }
+
+        .earth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-radial-gradient(
+                circle at 40% 40%,
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0.05) 10%,
+                transparent 20%
+            );
+            opacity: 0.5;
+            animation: cloudMove 20s linear infinite;
+        }
+
+        .mars {
+                width: 40px;
+                height: 40px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                #ff6b6b, 
+                #c23616, 
+                #8b0000, 
+                #5c0000
+            );
+            transform: translate(-50%, -50%) translateX(200px);
+            animation: 
+                planetRotate 20s linear infinite,
+                marsTexture 15s linear infinite;
+        }
+
+        .mars::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-radial-gradient(
+                circle at 50% 50%,
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0.05) 15%,
+                transparent 25%
+            );
+            opacity: 0.3;
+        }
+
+        .jupiter {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                #ffd700, 
+                #cd853f, 
+                #8b4513, 
+                #5d3a1a
+            );
+            transform: translate(-50%, -50%) translateX(300px);
+            animation: 
+                planetRotate 25s linear infinite,
+                jupiterTexture 20s linear infinite;
+        }
+
+        .jupiter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.1) 0%,
+                rgba(255,255,255,0.05) 10%,
+                transparent 20%
+            );
+            opacity: 0.4;
+        }
+
+        .saturn {
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(
+                circle at 30% 30%, 
+                #deb887, 
+                #d2691e, 
+                #8b4513, 
+                #5d3a1a
+            );
+            transform: translate(-50%, -50%) translateX(400px);
+            animation: 
+                planetRotate 30s linear infinite,
+                saturnTexture 25s linear infinite;
+        }
+
+        .saturn-rings {
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            left: -40px;
+            top: 25px;
+            border-radius: 50%;
+            background: linear-gradient(
+                to right, 
+                rgba(210, 105, 30, 0.5),
+                rgba(255, 215, 0, 0.3),
+                rgba(210, 105, 30, 0.5)
+            );
+            transform: rotateX(75deg);
+            box-shadow: 
+                0 0 20px rgba(0,0,0,0.5),
+                inset 0 0 20px rgba(0,0,0,0.3);
+            animation: ringRotate 40s linear infinite;
+        }
+
+        .stars, .stars2, .stars3 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: starRotate 100s linear infinite;
+        }
+
+        .stars:after, .stars2:after, .stars3:after {
+            content: '';
+            position: absolute;
+            top: -2000px;
+            left: -2000px;
+            right: -2000px;
+            bottom: -2000px;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            transform: translateZ(-100px);
+            opacity: 0;
+            animation: twinkle 8s ease-in-out infinite;
+        }
+
+        @keyframes systemRotate {
+            0% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
+            100% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); }
+        }
+
+        @keyframes orbitRotate {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(360deg); }
+        }
+
+        @keyframes planetRotate {
+            0% { transform: translate(-50%, -50%) rotateY(0deg); }
+            100% { transform: translate(-50%, -50%) rotateY(360deg); }
+        }
+
+        @keyframes sunPulse {
+            0% { 
+                transform: translate(-50%, -50%) scale(1); 
+                box-shadow: 
+                    0 0 50px #ff8c00, 
+                    0 0 100px #ff4500,
+                    inset -20px -20px 50px rgba(255,140,0,0.5),
+                    inset 20px 20px 50px rgba(255,69,0,0.3);
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1.05); 
+                box-shadow: 
+                    0 0 60px #ff8c00, 
+                    0 0 120px #ff4500,
+                    inset -25px -25px 60px rgba(255,140,0,0.6),
+                    inset 25px 25px 60px rgba(255,69,0,0.4);
+            }
+        }
+
+        @keyframes sunRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes sunCorona {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.4; }
+        }
+
+        @keyframes earthTexture {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes cloudMove {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes marsTexture {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes jupiterTexture {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes saturnTexture {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        @keyframes ringRotate {
+            0% { transform: rotateX(75deg) rotate(0deg); }
+            100% { transform: rotateX(75deg) rotate(360deg); }
+        }
+
+        @keyframes starRotate {
+            0% { transform: rotateZ(0deg) translateZ(-100px); }
+            100% { transform: rotateZ(360deg) translateZ(-100px); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Loader'ı gizleme animasyonu */
+        @keyframes hideLoader {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+            99% {
+                opacity: 0;
+                visibility: visible;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        #loader {
+            animation: hideLoader 4s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tema ve Dil Değiştirici -->
+    <div class="theme-language-switcher">
+        <button class="switch-btn" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+            <span class="theme-text">Karanlık Mod</span>
+        </button>
+        <button class="switch-btn" id="lang-toggle">
+            <i class="fas fa-language"></i>
+            <span class="lang-text">EN</span>
+        </button>
+    </div>
+
+    <!-- Space Scene Container -->
+    <div id="space-scene"></div>
+
+    <!-- Navigasyon -->
+    <nav>
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand translate" href="#">MUSTAFA EROL</a>
+                <button class="navbar-toggle" type="button">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+            <div class="navbar-menu">
+                <ul>
+                    <li><a href="#kimdir" class="translate">Kimdir?</a></li>
+                    <li><a href="#neyapar" class="translate">Ne yapar?</a></li>
+                    <li><a href="#blog" class="translate">Blog</a></li>
+                    <li><a href="#iletisim" class="translate">İletişim</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Kimdir Bölümü -->
+    <div id="kimdir" class="container-fluid bg-1">
+        <div class="profile-container">
+            <img src="img/1.jpg" alt="Mustafa Erol" class="profile-image">
+            <div class="profile-content">
+                <h1 class="translate">Merhaba, Ben Mustafa!</h1>
+                <h2 class="translate">Yazılım Geliştirici</h2>
+                <p class="translate">Yaratıcı ve yenilikçi çözümler üreten, sürekli öğrenmeye odaklı bir yazılım geliştiriciyim. Seyehat etme ve spor yapmayı severim.</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">4+</div>
+                        <div class="stat-label translate">Yıl Deneyim</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Ne Yapar Bölümü -->
+    <div id="neyapar" class="container-fluid bg-2">
+        <h3 class="translate">Neler Yaparım?</h3>
+        <p class="translate">Yazılım geliştirme, web tasarımı ile ilgilenir ayrıca spor yapmayı ve seyahat etmeyi severim.</p>
+        <a href="dahafazla.html" class="fancy-btn">
+            <span class="translate">Daha Fazla Bilgi</span>
+        </a>
+    </div>
+
+    <!-- Blog Bölümü -->
+    <div id="blog" class="container-fluid bg-3">
+        <h3 class="translate">Blog</h3>
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="img/2.png" alt="Blog Görseli" loading="lazy">
+                <p class="translate">Yazılım geliştirme</p>
+            </div>
+            <div class="col-sm-4">
+                <img src="img/3.png" alt="Blog Görseli" loading="lazy">
+                <p class="translate">Web Tasarımı</p>
+            </div>
+            <div class="col-sm-4">
+                <img src="img/4.jpg" alt="Blog Görseli" loading="lazy">
+                <p class="translate">Spor ve seyahat</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- İletişim Bölümü -->
+    <div id="iletisim" class="container-fluid bg-5">
+        <h3 class="translate">İletişim</h3>
+        <div class="contact-container">
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> Antalya, TR</p>
+                <p><i class="fas fa-envelope"></i> erolmustafa1406@gmail.com</p>
+            </div>
+            <form id="contact-form" onsubmit="sendEmail(event)">
+                <div class="form-group">
+                    <input class="contact-input" id="name" placeholder="İsim" type="text" required>
+                </div>
+                <div class="form-group">
+                    <input class="contact-input" id="email" placeholder="Email" type="email" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="contact-input" id="message" placeholder="Mesaj" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="contact-btn translate">Gönder</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="https://instagram.com/your-username" target="_blank" class="social-link">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://github.com/your-username" target="_blank" class="social-link">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://linkedin.com/in/your-username" target="_blank" class="social-link">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://skype:your-username?chat" target="_blank" class="social-link">
+                <i class="fab fa-skype"></i>
+            </a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Mustafa Erol. <span class="translate">Tüm hakları saklıdır.</span></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Three.js kurulumu
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+        // Renderer ayarları
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000);
+        renderer.shadowMap.enabled = true;
+        document.getElementById('space-scene').appendChild(renderer.domElement);
+
+        // Işıklandırma
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.PointLight(0xffffff, 2);
+        sunLight.position.set(0, 0, 0);
+        sunLight.castShadow = true;
+        scene.add(sunLight);
+
+        // Yıldızlar
+        const starGeometry = new THREE.BufferGeometry();
+        const starVertices = [];
+        for(let i = 0; i < 15000; i++) {
+            const x = (Math.random() - 0.5) * 2000;
+            const y = (Math.random() - 0.5) * 2000;
+            const z = (Math.random() - 0.5) * 2000;
+            starVertices.push(x, y, z);
+        }
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 1,
+            sizeAttenuation: true
+        });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // Güneş
+        const sunGeometry = new THREE.SphereGeometry(50, 64, 64);
+        const sunMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff9900,
+            emissive: 0xff6600,
+            emissiveIntensity: 1
+        });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Güneş parlaması efekti
+        const textureLoader = new THREE.TextureLoader();
+        const sunLensFlare = new THREE.SpriteMaterial({
+            map: textureLoader.load('https://threejs.org/examples/textures/lensflare/lensflare0.png'),
+            transparent: true,
+            opacity: 0.6,
+            color: 0xffaa00
+        });
+        const sunFlare = new THREE.Sprite(sunLensFlare);
+        sunFlare.scale.set(200, 200, 1);
+        sun.add(sunFlare);
+
+        // Gezegen oluşturma fonksiyonu
+        function createPlanet(radius, color, distance) {
+            const geometry = new THREE.SphereGeometry(radius, 64, 64);
+            const material = new THREE.MeshPhongMaterial({
+                color: color,
+                shininess: 50,
+                specular: 0x444444,
+                bumpScale: 0.05
+            });
+
+            const planet = new THREE.Mesh(geometry, material);
+            
+            // Atmosfer efekti
+            const atmosphere = new THREE.Mesh(
+                new THREE.SphereGeometry(radius * 1.1, 64, 64),
+                new THREE.MeshPhongMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: 0.2,
+                    side: THREE.BackSide
+                })
+            );
+            planet.add(atmosphere);
+            
+            planet.position.x = distance;
+            planet.userData = {
+                distance: distance,
+                angle: Math.random() * Math.PI * 2,
+                rotationSpeed: 0.02 / (distance / 100)
+            };
+            
+            planet.castShadow = true;
+            planet.receiveShadow = true;
+            
+            scene.add(planet);
+            return planet;
+        }
+
+        // Gezegenleri oluştur
+        const planets = [
+            createPlanet(5, 0x8B7355, 100),   // Merkür - kahverengi-gri
+            createPlanet(8, 0xE6B800, 150),   // Venüs - altın sarısı
+            createPlanet(10, 0x4169E1, 200),  // Dünya - mavi
+            createPlanet(7, 0xA0522D, 280),   // Mars - kızıl-kahve
+            createPlanet(25, 0xDEB887, 400),  // Jüpiter - açık kahve
+            createPlanet(20, 0xF4A460, 550),  // Satürn - kum rengi
+            createPlanet(15, 0x87CEEB, 700),  // Uranüs - açık mavi
+            createPlanet(15, 0x4682B4, 850)   // Neptün - koyu mavi
+        ];
+
+        // Kamera pozisyonu
+        camera.position.set(0, 200, 900);
+        camera.lookAt(0, 0, 0);
+
+        // Kamera animasyonu için değişkenler
+        let targetPosition = new THREE.Vector3();
+        let currentPlanetIndex = -1;
+        let isAnimating = false;
+        let originalCameraPosition = new THREE.Vector3(0, 200, 900);
+        camera.position.copy(originalCameraPosition);
+
+        // Gezegen geçiş animasyonu
+        function animateToPlanet(planetIndex) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const planet = planets[planetIndex];
+            const startPosition = camera.position.clone();
+            const startTime = Date.now();
+            const duration = 4000;
+
+            // Geçiş yolu hesaplama
+            const curvePoints = [];
+            const planetPos = planet.position.clone();
+            const distanceFromPlanet = 100;
+            
+            curvePoints.push(startPosition);
+            curvePoints.push(new THREE.Vector3(
+                planetPos.x - distanceFromPlanet,
+                planetPos.y + 50,
+                planetPos.z + distanceFromPlanet
+            ));
+            curvePoints.push(new THREE.Vector3(
+                planetPos.x + distanceFromPlanet,
+                planetPos.y + 20,
+                planetPos.z - distanceFromPlanet
+            ));
+            curvePoints.push(originalCameraPosition);
+
+            const curve = new THREE.CatmullRomCurve3(curvePoints);
+
+            function updateCamera() {
+                const currentTime = Date.now();
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const point = curve.getPoint(easeProgress);
+                camera.position.copy(point);
+
+                if (progress < 0.8) {
+                    camera.lookAt(planet.position);
+                } else {
+                    const lookAtPos = new THREE.Vector3();
+                    lookAtPos.lerpVectors(planet.position, new THREE.Vector3(0, 0, 0), (progress - 0.8) * 5);
+                    camera.lookAt(lookAtPos);
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCamera);
+                } else {
+                    isAnimating = false;
+                    setTimeout(() => {
+                        currentPlanetIndex = (currentPlanetIndex + 1) % planets.length;
+                        animateToPlanet(currentPlanetIndex);
+            }, 1000);
+                }
+            }
+
+            updateCamera();
+        }
+
+        // Animasyon döngüsü
+        function animate() {
+            requestAnimationFrame(animate);
+
+            stars.rotation.y += 0.0002;
+            sunFlare.material.opacity = 0.6 + Math.sin(Date.now() * 0.001) * 0.2;
+
+            planets.forEach(planet => {
+                planet.userData.angle += planet.userData.rotationSpeed;
+                planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
+                planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
+                planet.rotation.y += 0.01;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // Pencere boyutu değiştiğinde
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Animasyonu başlat
+        animate();
+        setTimeout(() => {
+            currentPlanetIndex = 0;
+            animateToPlanet(currentPlanetIndex);
+        }, 2000);
+
+        // Tema değiştirici güncelleme
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const themeText = themeToggle.querySelector('.theme-text');
+
+        // Sayfa yüklendiğinde tema ayarını kontrol et
+        window.addEventListener('load', () => {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.body.classList.remove('light-mode');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = translations[currentLang]['Light Mode'];
+            } else {
+                document.body.classList.add('light-mode');
+                document.body.classList.remove('dark-mode');
+            }
+        });
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            if (isDarkMode) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = translations[currentLang]['Light Mode'];
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = translations[currentLang]['Dark Mode'];
+            }
+        });
+
+        // Dil çevirisi için sözlük
+        const translations = {
+         tr: {
+                'Who am I?': 'Kimdir?',
+                'What I do?': 'Ne yapar?',
+             'Blog': 'Blog',
+                'Contact': 'İletişim',
+                'Hi, I\'m Mustafa!': 'Merhaba, Ben Mustafa!',
+                'Software Developer': 'Yazılım Geliştirici',
+                'I am a software developer focused on continuous learning, producing creative and innovative solutions. I enjoy traveling and sports.': 'Yaratıcı ve yenilikçi çözümler üreten, sürekli öğrenmeye odaklı bir yazılım geliştiriciyim. Seyehat etme ve spor yapmayı severim.',
+                'Years Experience': 'Yıl Deneyim',
+                'What I Do?': 'Neler Yaparım?',
+                'I work on software development, web design, and I also enjoy sports and traveling.': 'Yazılım geliştirme, web tasarımı ile ilgilenir ayrıca spor yapmayı ve seyahat etmeyi severim.',
+                'Learn More': 'Daha Fazla Bilgi',
+                'Software Development': 'Yazılım geliştirme',
+                'Web Design': 'Web Tasarımı',
+                'Sports and Travel': 'Spor ve seyahat',
+                'Name': 'İsim',
+                'Message': 'Mesaj',
+                'Send': 'Gönder',
+                'Dark Mode': 'Karanlık Mod',
+                'Light Mode': 'Aydınlık Mod',
+                'Your message has been sent!': 'Mesajınız gönderildi!',
+                'All rights reserved.': 'Tüm hakları saklıdır.',
+                'More About Me': 'Hakkımda Daha Fazlası',
+                'My Experience': 'Deneyimlerim',
+                'Competition Experience': 'Yarışma Deneyimleri',
+                'MEB Robot Competition': 'MEB Robot Yarışması',
+                'Two-time participant in Mini Sumo category': 'Mini Sumo kategorisinde 2 kez katılım',
+                'Virtual Qualification - 13th place': 'Sanal Ön Eleme - 13. sıralama',
+                'Technical Skills': 'Teknik Yetenekler',
+                'Web Development': 'Web Geliştirme',
+                'Database Management': 'Veritabanı Yönetimi',
+                'Software I Use': 'Kullandığım Yazılımlar',
+                'Education': 'Eğitim',
+                'Projects': 'Projeler',
+                'Back to Home': 'Ana Sayfaya Dön',
+                'Computer Programming': 'Bilgisayar Programcılığı',
+                'Various Web Projects': 'Çeşitli web projeleri',
+                'Stock Market Tracking Application': 'Hisse senedi takip uygulaması',
+                'TEKNOFEST': 'TEKNOFEST',
+                'Participant': 'Katılımcı',
+                'I graduated from İsmet İnenü MTAL IT department. Currently, I am a first-year student at Akdeniz University. I am continuously taking online courses and training to improve myself.': 'İsmet İnenü MTAL BT bölümü mezunuyum. Şuan Akdeniz üniversitesinde 1. sınıf öğerncisiyim. Sürekli kendimi geliştirmek için online kurslar ve eğitimler alıyorum.',
+                'Akdeniz University (2024)': 'Akdeniz Üniversitesi (2024)',
+                'I have 4 years of experience in software development. I completed my high school education in Information Technologies at İsmet İnenü MTAL. I completed my internship at İş Bank in my senior year. Currently, I am studying Computer Programming at Akdeniz University Korkuteli Vocational School.': 'Yazılım geliştirme alanında 4 yıllık deneyimim bulunmaktadır. Lise eğitimimi Bilişim teknolojileri bölümümde İsmet İnenü MTAL okulunda tamamladım. Lise son sınıfda staj eğitimimi de İş Bankasın da tamamladım. Şimdilerde ise Akdeniz Üniversitesi Korkuteli MYO da Bilgisayar Programcılığı eğitimimi görmekteyim.'
+        },
+        en: {
+            'Kimdir?': 'Who am I?',
+            'Ne yapar?': 'What I do?',
+            'Blog': 'Blog',
+            'İletişim': 'Contact',
+            'Merhaba, Ben Mustafa!': 'Hi, I\'m Mustafa!',
+            'Yazılım Geliştirici': 'Software Developer',
+                'Yaratıcı ve yenilikçi çözümler üreten, sürekli öğrenmeye odaklı bir yazılım geliştiriciyim. Seyehat etme ve spor yapmayı severim.': 'I am a software developer focused on continuous learning, producing creative and innovative solutions. I enjoy traveling and sports.',
+            'Yıl Deneyim': 'Years Experience',
+            'Neler Yaparım?': 'What I Do?',
+                'Yazılım geliştirme, web tasarımı ile ilgilenir ayrıca spor yapmayı ve seyahat etmeyi severim.': 'I work on software development, web design, and I also enjoy sports and traveling.',
+            'Daha Fazla Bilgi': 'Learn More',
+            'Yazılım geliştirme': 'Software Development',
+            'Web Tasarımı': 'Web Design',
+            'Spor ve seyahat': 'Sports and Travel',
+            'İsim': 'Name',
+            'Mesaj': 'Message',
+            'Gönder': 'Send',
+            'Karanlık Mod': 'Dark Mode',
+            'Aydınlık Mod': 'Light Mode',
+            'Mesajınız gönderildi!': 'Your message has been sent!',
+                'Tüm hakları saklıdır.': 'All rights reserved.',
+                'Hakkımda Daha Fazlası': 'More About Me',
+                'Deneyimlerim': 'My Experience',
+                'Yarışma Deneyimleri': 'Competition Experience',
+                'MEB Robot Yarışması': 'MEB Robot Competition',
+                'Mini Sumo kategorisinde 2 kez katılım': 'Two-time participant in Mini Sumo category',
+                'Sanal Ön Eleme - 13. sıralama': 'Virtual Qualification - 13th place',
+                'Teknik Yetenekler': 'Technical Skills',
+                'Web Geliştirme': 'Web Development',
+                'Veritabanı Yönetimi': 'Database Management',
+                'Kullandığım Yazılımlar': 'Software I Use',
+                'Eğitim': 'Education',
+                'Projeler': 'Projects',
+                'Ana Sayfaya Dön': 'Back to Home',
+                'Bilgisayar Programcılığı': 'Computer Programming',
+                'Çeşitli web projeleri': 'Various Web Projects',
+                'Hisse senedi takip uygulaması': 'Stock Market Tracking Application',
+                'TEKNOFEST': 'TEKNOFEST',
+                'Katılımcı': 'Participant',
+                'İsmet İnenü MTAL BT bölümü mezunuyum. Şuan Akdeniz üniversitesinde 1. sınıf öğerncisiyim. Sürekli kendimi geliştirmek için online kurslar ve eğitimler alıyorum.': 'I graduated from İsmet İnenü MTAL IT department. Currently, I am a first-year student at Akdeniz University. I am continuously taking online courses and training to improve myself.',
+                'Akdeniz Üniversitesi (2024)': 'Akdeniz University (2024)',
+                'Yazılım geliştirme alanında 4 yıllık deneyimim bulunmaktadır. Lise eğitimimi Bilişim teknolojileri bölümümde İsmet İnenü MTAL okulunda tamamladım. Lise son sınıfda staj eğitimimi de İş Bankasın da tamamladım. Şimdilerde ise Akdeniz Üniversitesi Korkuteli MYO da Bilgisayar Programcılığı eğitimimi görmekteyim.': 'I have 4 years of experience in software development. I completed my high school education in Information Technologies at İsmet İnenü MTAL. I completed my internship at İş Bank in my senior year. Currently, I am studying Computer Programming at Akdeniz University Korkuteli Vocational School.'
+            }
+        };
+
+        // Dil durumunu localStorage'da saklayalım
+        let currentLang = localStorage.getItem('language') || 'tr';
+
+        // Dil değiştirme fonksiyonu
+        const langToggle = document.getElementById('lang-toggle');
+        const langText = langToggle.querySelector('.lang-text');
+
+        function updateTexts() {
+            document.querySelectorAll('h1, h2, h3, h4, p, span, a, input[placeholder], textarea[placeholder]').forEach(element => {
+                const text = element.textContent?.trim() || element.placeholder?.trim();
+                if (text && translations[currentLang][text]) {
+                    if (element.placeholder) {
+                        element.placeholder = translations[currentLang][text];
+                    } else {
+                        element.textContent = translations[currentLang][text];
+                    }
+                }
+            });
+        }
+
+        langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'tr' ? 'en' : 'tr';
+            localStorage.setItem('language', currentLang);
+        langText.textContent = currentLang === 'tr' ? 'EN' : 'TR';
+            updateTexts();
+            
+            // Diğer sekmeleri/pencereleri bilgilendir
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'language',
+                newValue: currentLang,
+                oldValue: currentLang === 'tr' ? 'en' : 'tr',
+                storageArea: localStorage
+            }));
+        });
+
+        // Sayfa yüklendiğinde dil ayarını kontrol et ve uygula
+        window.addEventListener('load', () => {
+            langText.textContent = currentLang === 'tr' ? 'EN' : 'TR';
+            updateTexts();
+        });
+
+        // Mobil menü toggle
+        const navbarToggle = document.querySelector('.navbar-toggle');
+        const navbarMenu = document.querySelector('.navbar-menu');
+        
+        navbarToggle.addEventListener('click', function() {
+            navbarMenu.classList.toggle('active');
+        });
+
+        // Scroll animasyonu
+        const sections = document.querySelectorAll('.container-fluid');
+        
+        const observerOptions = {
+            threshold: 0.25
+        };
+
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Email gönderme fonksiyonu
+        function sendEmail(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            const mailtoLink = `mailto:erolmustafa1406@gmail.com?subject=İletişim Formu: ${name}&body=Gönderen: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMesaj:%0D%0A${message}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Form temizleme ve bildirim gösterme
+            document.getElementById('contact-form').reset();
+            alert(currentLang === 'tr' ? 'Mesajınız gönderildi!' : 'Your message has been sent!');
+        }
+    </script>
+</body>
+</html>
